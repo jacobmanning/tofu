@@ -4,5 +4,4 @@ export TOFU_PROJECT=$PWD
 # Create name for this container based on the project
 export TOFU_PROJECT_NAME="$(basename -- $TOFU_PROJECT)"
 
-# docker build -t tofu:latest $TOFU_PROJECTS_ROOT/tofu
 docker build --tag $TOFU_PROJECT_NAME:latest --file Tofufile $TOFU_PROJECT
