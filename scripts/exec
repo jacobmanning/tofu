@@ -4,5 +4,4 @@ export TOFU_PROJECT=$PWD
 # Create name for this container based on the project
 export TOFU_PROJECT_NAME="$(basename -- $TOFU_PROJECT)"
 
-# Mount our project into the container, name it, and run it detached
-docker run -v $TOFU_PROJECT:/code --name $TOFU_PROJECT_NAME -itd tofu
+docker exec -it $TOFU_PROJECT_NAME "$@"
