@@ -6,6 +6,7 @@ Tofu
 
 import logging
 import os
+import pathlib
 import subprocess
 import sys
 
@@ -13,21 +14,21 @@ CONFIG = {
   "logging_format_string": "[%(levelname)s] %(message)s",
   "logging_name": "tofu",
   "logging_level": logging.INFO,
-  "root_dir": ".",
-  "scripts_dir": "scripts",
+  "root_dir": pathlib.Path.home() / pathlib.Path("tofu"),
+  "scripts_dir": pathlib.Path("scripts"),
 }
 
 def get_scripts_dir():
   """Get the directory where scripts are found."""
-  return os.path.join(CONFIG["root_dir"], CONFIG["scripts_dir"])
+  return CONFIG["root_dir"] / CONFIG["scripts_dir"]
 
 def get_full_command(cmd):
   """Get the full path to the command in the scripts dir."""
-  return os.path.join(get_scripts_dir(), cmd)
+  return get_scripts_dir() / pathlib.Path(cmd)
 
 def get_valid_commands():
   """Get a list of the valid commands."""
-  return [f for f in os.listdir(get_scripts_dir()) if os.path.isfile(get_full_command(f))]
+  return [f.name for f in get_scripts_dir().glob('*') if f.is_file()]
 
 def is_valid_command(cmd):
   """Check if a command is valid"""
