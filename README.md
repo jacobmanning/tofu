@@ -4,18 +4,18 @@ tofu is a (light) wrapper around `docker` for building and executing code in a d
 **Disclaimer:** I wrote this to fit my use cases. No promises that you find this useful at all.
 
 ## Requirements
-Python 3.6+
+Docker
 
 ## Set up
 First, clone this repo in your home directory
 ```
 $ cd ~
-$ git clone https://github.com/jacobmanning:tofu
+$ git clone https://github.com/jacobmanning/tofu
 ```
 
 Then "install" tofu by creating an alias for it in your `~/.bashrc` (or similar)
 ```
-alias tofu="python3 $HOME/tofu/scripts/impl/tofu.py"
+alias tofu="$HOME/tofu/scripts/impl/tofu"
 ```
 
 ## Basic Usage

@@ -1,0 +1,78 @@
+#!/bin/sh
+
+# Get current directory to mount into tofu container
+export TOFU_PROJECT=$PWD
+# Create name for this container based on the project
+export TOFU_PROJECT_NAME="tofu_$(basename -- $TOFU_PROJECT)"
+
+# Build container
+tofu_build () {
+  docker build --tag $TOFU_PROJECT_NAME:latest --file Tofufile $TOFU_PROJECT
+}
+
+# Run/start container
+tofu_run () {
+  START_CMD="docker start $TOFU_PROJECT_NAME"
+  RUN_CMD="docker run --volume $TOFU_PROJECT:/code --name $TOFU_PROJECT_NAME --interactive --tty -d -e DISPLAY=$DISPLAY --volume /tmp/.X11-unix:/tmp/.X11-unix $TOFU_PROJECT_NAME"
+  $START_CMD || $RUN_CMD
+}
+
+# Exec inside container
+tofu_exec () {
+  docker exec --interactive --tty --workdir /code $TOFU_PROJECT_NAME "$@"
+}
+
+# Stop conainter
+tofu_stop () {
+  docker stop $TOFU_PROJECT_NAME
+
+
+# Display help message
+tofu_help () {
+  echo "[tofu] Supported commands are: build, run, exec, stop"
+}
+
+# Display error message
+tofu_error () {
+  echo "[tofu] Unknown flag: $1"
+  tofu_help
+}
+
+# Handle arguments
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    build)
+      shift
+      tofu_build $@
+      exit 0
+      ;;
+    run)
+      shift
+      tofu_run $@
+      exit 0
+      ;;
+    exec)
+      shift
+      tofu_exec $@
+      exit 0
+      ;;
+    stop)
+      shift
+      tofu_stop $@
+      exit 0
+      ;;
+    help|-h|--help)
+      tofu_help
+      shift
+      exit 0
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      tofu_error $1
+      exit 1
+      ;;
+  esac
+done

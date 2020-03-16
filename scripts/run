@@ -1,8 +1,0 @@
-#!/bin/sh
-# Get current directory to mount into tofu container
-export TOFU_PROJECT=$PWD
-# Create name for this container based on the project
-export TOFU_PROJECT_NAME="$(basename -- $TOFU_PROJECT)"
-
-# Mount our project into the container, name it, and run it detached
-docker run --volume $TOFU_PROJECT:/code --name $TOFU_PROJECT_NAME --interactive --tty -d $TOFU_PROJECT_NAME

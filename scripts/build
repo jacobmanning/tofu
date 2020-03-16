@@ -1,7 +1,0 @@
-#!/bin/sh
-# Get current directory to mount into tofu container
-export TOFU_PROJECT=$PWD
-# Create name for this container based on the project
-export TOFU_PROJECT_NAME="$(basename -- $TOFU_PROJECT)"
-
-docker build --tag $TOFU_PROJECT_NAME:latest --file Tofufile $TOFU_PROJECT
