@@ -27,9 +27,27 @@ tofu_stop () {
   docker stop $TOFU_PROJECT_NAME
 }
 
+# Get list of running containers
+tofu_ps () {
+  # docker ps --filter "name=tofu" "$@"
+  docker ps --filter name=tofu "$@"
+}
+
+# Get list of images
+tofu_images () {
+  docker images "tofu_*" "$@"
+}
+
+# Remove image
+tofu_remove () {
+  ID=$(docker inspect --format="{{.Id}}" $TOFU_PROJECT_NAME)
+  docker rmi $TOFU_PROJECT_NAME
+  docker rm --force $ID
+}
+
 # Display help message
 tofu_help () {
-  echo "[tofu] Supported commands are: build, run, exec, stop"
+  echo "[tofu] Supported commands are: build, run, exec, stop, ps"
 }
 
 # Display error message
@@ -59,6 +77,21 @@ while [[ "$#" -gt 0 ]]; do
     stop)
       shift
       tofu_stop $@
+      exit 0
+      ;;
+    ps)
+      shift
+      tofu_ps $@
+      exit 0
+      ;;
+    images)
+      shift
+      tofu_images $@
+      exit 0
+      ;;
+    remove)
+      shift
+      tofu_remove $@
       exit 0
       ;;
     help|-h|--help)
