@@ -25,7 +25,7 @@ tofu_exec () {
 # Stop conainter
 tofu_stop () {
   docker stop $TOFU_PROJECT_NAME
-
+}
 
 # Display help message
 tofu_help () {
