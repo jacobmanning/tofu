@@ -45,9 +45,14 @@ tofu_remove () {
   docker rm --force $ID
 }
 
+# Launch docker daemon
+tofu_launch () {
+  open --background -a Docker
+}
+
 # Display help message
 tofu_help () {
-  echo "[tofu] Supported commands are: build, run, exec, stop, ps"
+  echo "[tofu] Supported commands are: build, run, exec, stop, ps, images, launch"
 }
 
 # Display error message
@@ -92,6 +97,11 @@ while [[ "$#" -gt 0 ]]; do
     remove)
       shift
       tofu_remove $@
+      exit 0
+      ;;
+    launch)
+      shift
+      tofu_launch $@
       exit 0
       ;;
     help|-h|--help)
